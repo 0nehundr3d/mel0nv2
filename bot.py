@@ -19,6 +19,7 @@ bot = commands.Bot(prefix, intents = nextcord.Intents.all())
 initial_extensions = [
 	"cogs.util",
 	"cogs.events",
+	"cogs.nsfw",
 ]
 
 print(initial_extensions)
