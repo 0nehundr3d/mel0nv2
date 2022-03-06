@@ -18,6 +18,7 @@ bot = commands.Bot(prefix, intents = nextcord.Intents.all())
 # Load cogs
 initial_extensions = [
 	"cogs.util",
+	"cogs.events",
 ]
 
 print(initial_extensions)
