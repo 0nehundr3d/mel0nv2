@@ -2,7 +2,7 @@ import nextcord
 from nextcord.ext import commands
 
 
-class CogName(commands.Cog):
+class Util(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
 
@@ -11,4 +11,4 @@ class CogName(commands.Cog):
 		await ctx.send(f"Pong! {round(self.bot.latency * 1000)}ms")
 
 def setup(bot:commands.Bot):
-	bot.add_cog(CogName(bot))
+	bot.add_cog(Util(bot))
