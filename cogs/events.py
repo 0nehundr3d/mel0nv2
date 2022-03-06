@@ -19,14 +19,14 @@ class Events(commands.Cog):
 			if user.id in exemptions["exemptions"]: return await ctx.send(f"{user.name} is already exempted."); return
 
 			exemptions["exemptions"].append(user.id)
-		
+
+		with open("config/exemptions.json", "w") as f: json.dump(exemptions, f, indent=4)
+
 		try:
 			self.bot.reload_extension("cogs.events")
 			await ctx.send(f"Added {user.name} to exemptions.")
 		except Exception as e:
 			await ctx.reply(f"Failed add user to exemptions.\n{e}")
-
-		with open("config/exemptions.json", "w") as f: json.dump(exemptions, f, indent=4)
 
 	@commands.command()
 	async def removeExemption(self, ctx, user:nextcord.User):
@@ -37,14 +37,14 @@ class Events(commands.Cog):
 			if user.id not in exemptions["exemptions"]: return await ctx.send(f"{user.name} is not exempted."); return
 
 			exemptions["exemptions"].remove(user.id)
-		
+
+		with open("config/exemptions.json", "w") as f: json.dump(exemptions, f, indent=4)
+
 		try:
 			self.bot.reload_extension("cogs.events")
 			await ctx.send(f"removed {user.name} from exemptions.")
 		except Exception as e:
 			await ctx.reply(f"Failed remove user from exemptions.\n{e}")
-
-		with open("config/exemptions.json", "w") as f: json.dump(exemptions, f, indent=4)
 
 	@commands.command()
 	async def isExempt(self, ctx, user:nextcord.User = None):
