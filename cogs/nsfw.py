@@ -18,8 +18,17 @@ class NSFW(commands.Cog):
 		posts = self.e6Client.get_posts(tags, limit)
 		for post in posts["posts"]:
 			postUrl= post["file"]["url"]
+			artist = ""
+			for i in post["tags"]["artist"]:
+				if i != post["tags"]["artist"][-1]:
+					artist += f"{i},"
+				else:
+					artist += i
 
-			embed = nextcord.Embed(title="Source",url=post["sources"][0]).set_image(url=postUrl)
+			embed = nextcord.Embed(title="Source",url=post["sources"][0])
+			embed.set_image(url=postUrl)
+			embed.set_author(name=f"artist(s): {artist}")
+
 			await ctx.send(embed=embed)
 
 def setup(bot:commands.Bot):
