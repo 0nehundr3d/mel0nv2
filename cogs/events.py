@@ -62,7 +62,10 @@ class Events(commands.Cog):
 	async def on_message(self, msg):
 		if msg.author.id in self.exemptions: return
 
-		if "horny" in msg.content.lower(): await msg.reply("<:gay:898076464061231125>")
+		msg = f" {msg} "
+
+		if " horny " in msg.content.lower(): await msg.add_reaction("<:gay:898076464061231125>")
+		if " cum " in msg.content.lower(): await msg.add_reaction("<:cum:950228416135843901>")
 
 def setup(bot:commands.Bot):
 	bot.add_cog(Events(bot))
