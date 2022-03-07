@@ -20,6 +20,7 @@ initial_extensions = [
 	"cogs.util",
 	"cogs.events",
 	"cogs.nsfw",
+	"cogs.interactions",
 ]
 
 print(initial_extensions)

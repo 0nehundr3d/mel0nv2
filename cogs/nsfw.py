@@ -9,11 +9,14 @@ class NSFW(commands.Cog):
 
 	@commands.command()
 	async def yiff(self, ctx, tags:str = "", limit:int = 1):
-		if not ctx.channel.nsfw: return await ctx.send("This command can only be used in NSFW channels.")
+		#if not ctx.channel.nsfw: return await ctx.send("This command can only be used in NSFW channels.")
 		
 		posts = self.e6Client.get_posts(tags, limit)
 		for post in posts["posts"]:
-			await ctx.send(post["file"]["url"])
+			postUrl= post["file"]["url"]
+
+			embed = nextcord.Embed(title="link",url=post["sources"][0],thumbnail=postUrl)
+			await ctx.send(embed=embed)
 
 def setup(bot:commands.Bot):
 	bot.add_cog(NSFW(bot))
