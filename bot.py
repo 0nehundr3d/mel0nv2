@@ -30,7 +30,7 @@ if __name__ == '__main__':
 		try:
 			bot.load_extension(extension)
 		except Exception as e:
-			print(f"Failed to load extension {extension}")
+			print(f"Failed to load extension {extension}: {e}")
 
 @bot.event
 async def on_ready():
