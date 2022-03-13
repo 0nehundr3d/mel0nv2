@@ -37,6 +37,7 @@ async def on_ready():
 	print(f"We have logged in as {bot.user}")
 	await bot.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.watching, name ="0ne suffer"), status=nextcord.Status.dnd)
 	print(nextcord.__version__)
+	bot.remove_command("help")
 
 def check_manager():
 		def predicate(ctx):
