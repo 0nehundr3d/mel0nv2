@@ -1,6 +1,10 @@
 {
-	"token1": "OTQzNzg5MjUyNzU0NDA3NDg0.Yg4KPA.ALlb_dl2O8-BJCD_ob5QyCZr3Qw",
-	"token": "NDI5Mzk0MjQ1NTM1NjYyMDgw.Wr6ujQ.ctTEXg2NNj4zmKEIDP6rXtWdmNI",
-	"prefix": ".",
-	"manager": [346060682388832266]
+    "token": "NDI5Mzk0MjQ1NTM1NjYyMDgw.Wr6ujQ.ctTEXg2NNj4zmKEIDP6rXtWdmNI",
+    "prefix": ".",
+    "manager": [
+        346060682388832266
+    ],
+    "game": "a fight for 0ne's attention",
+    "gameType": 3,
+    "status": 2
 }

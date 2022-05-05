@@ -5,6 +5,7 @@ import traceback
 import nextcord
 from nextcord.ext import commands
 import json
+from utility import converters
 
 def main():
 
@@ -15,8 +16,12 @@ def main():
 		token = data["token"]
 		prefix = data["prefix"]
 		manager = data["manager"]
+		status = data["status"]
+		game = data["game"]
+		gameType = data["gameType"]
 
 	bot = commands.Bot(prefix, intents = nextcord.Intents.all())
+	bot.remove_command("help")
 
 	# Load cogs
 	initial_extensions = [
@@ -24,6 +29,7 @@ def main():
 		"cogs.events",
 		"cogs.nsfw",
 		"cogs.interactions",
+		"cogs.config",
 	]
 
 	print(initial_extensions)
@@ -37,7 +43,7 @@ def main():
 	@bot.event
 	async def on_ready():
 		print(f"We have logged in as {bot.user}")
-		await bot.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.watching, name ="0ne suffer"), status=nextcord.Status.dnd)
+		await bot.change_presence(activity=nextcord.Activity(type=converters.Convertor.convertGameType(gameType), name = game), status=converters.Convertor.convertStatus(status))
 		print(nextcord.__version__)
 
 	def check_manager():
