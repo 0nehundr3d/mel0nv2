@@ -60,6 +60,8 @@ class Events(commands.Cog):
 
 	@commands.command()
 	async def bullyMutt(self, ctx):
+		if not ctx.author.id in self.manager: return
+
 		with open("config/exemptions.json", "r") as f: config = json.load(f)
 
 		if self.harass:
@@ -73,6 +75,7 @@ class Events(commands.Cog):
 			with open("config/exemptions.json", "w") as f:
 				json.dump(config, f, indent=4)
 			await ctx.send("Mutt harassment is now enabled.")
+			await ctx.guild.get_member(525896357756796948).send(":)")
 			self.bot.reload_extension("cogs.events")
 
 	@commands.Cog.listener()
@@ -80,11 +83,14 @@ class Events(commands.Cog):
 		if msg.author.id in self.exemptions: return
 
 		msgstring = f" {msg.content.lower()} "
+		for item in ['.',',','!','?']:
+			msgstring = msgstring.replace(item, "")
 
-		if self.harass and msg.author.id == 525896357756796948: await msg.channel.send("<:CheemWierd:951980915960184842> ")
+		if self.harass and msg.author.id == 525896357756796948: await msg.channel.send("<:CheemWierd:951980915960184842>")
 		if " horny " in msgstring: await msg.add_reaction("<:gay:898076464061231125>")
 		if " cum " in msgstring: await msg.add_reaction("<:cum:950228416135843901>")
 		if " bruh " in msgstring: await msg.add_reaction("<a:catdie:951702853817360394>")
+		if " mutt " in msgstring: await msg.add_reaction("<:CheemWierd:951980915960184842>")
 
 
 def setup(bot:commands.Bot):
