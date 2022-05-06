@@ -6,6 +6,7 @@ import nextcord
 from nextcord.ext import commands
 import json
 from utility import converters
+import os
 
 def main():
 
@@ -24,21 +25,14 @@ def main():
 	bot.remove_command("help")
 
 	# Load cogs
-	initial_extensions = [
-		"cogs.util",
-		"cogs.events",
-		"cogs.nsfw",
-		"cogs.interactions",
-		"cogs.config",
-	]
+	cogs = [x[:-3] for x in os.listdir("cogs") if x[-3:] == ".py"]
 
-	print(initial_extensions)
-
-	for extension in initial_extensions:
+	for cog in cogs:
 		try:
-			bot.load_extension(extension)
+			bot.load_extension(f"cogs.{cog}")
+			print(f"Loaded {cog}")
 		except Exception as e:
-			print(f"Failed to load extension {extension}")
+			print(f"Failed to load extension {cog}: {e}")
 
 	@bot.event
 	async def on_ready():
