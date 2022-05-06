@@ -12,11 +12,12 @@ class Util(commands.Cog):
 
 	@commands.command()
 	async def ping(self, ctx):
-		await ctx.send(f"Pong! {round(self.bot.latency * 1000)}ms")
+		embed=nextcord.Embed(title=f"Pong! {round(self.bot.latency * 1000)}ms", color=0x00f21c)
+		await ctx.send(embed=embed)
 
 	@commands.command()
 	async def help(self, ctx):
-		await ctx.send("Help commands are hard lol just ping 0ne")
+		await ctx.send("Help commands are hard just ping 0ne lol")
 
 	@commands.command()
 	async def reloadCogs(self, ctx):
