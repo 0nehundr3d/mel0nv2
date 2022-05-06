@@ -2,6 +2,8 @@ import nextcord
 from nextcord.ext import commands
 import json
 import os
+from datetime import datetime
+import pandas as pd
 
 class Util(commands.Cog):
 	def __init__(self, bot:commands.Bot):
@@ -9,6 +11,7 @@ class Util(commands.Cog):
 
 	with open("config/configuration.json", "r") as f: config = json.load(f)
 	managers = config["manager"]
+	startTime = config["startTime"]
 
 	@commands.command()
 	async def ping(self, ctx):
@@ -32,6 +35,16 @@ class Util(commands.Cog):
 			except Exception as e:
 				embed.add_field(name=f"Reloading {cog}",value=f"Failed: {e}",inline=False)
 				embed.color = 0xf20004
+
+		await ctx.send(embed=embed)
+
+	@commands.command()
+	async def upTime(self, ctx):
+		embed = nextcord.Embed(title="Up Time", color=0x00f21c)
+
+		timeObj = datetime.strptime(self.startTime, "%Y-%m-%d %H:%M:%S.%f")
+
+		embed.add_field(name="Bot Uptime", value=f"{pd.to_timedelta(datetime.now() - timeObj).round('1s')}", inline=False)
 
 		await ctx.send(embed=embed)
 

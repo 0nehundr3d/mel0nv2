@@ -7,9 +7,9 @@ from nextcord.ext import commands
 import json
 from utility import converters
 import os
+from datetime import datetime
 
 def main():
-
 
 	# Get configuration.json
 	with open("config/configuration.json", "r") as config:
@@ -20,6 +20,11 @@ def main():
 		status = data["status"]
 		game = data["game"]
 		gameType = data["gameType"]
+
+	data["startTime"] = f"{datetime.now()}"
+
+	with open("config/configuration.json", "w") as config:
+		json.dump(data, config, indent=4)
 
 	bot = commands.Bot(prefix, intents = nextcord.Intents.all())
 	bot.remove_command("help")
