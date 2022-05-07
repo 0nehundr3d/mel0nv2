@@ -8,14 +8,16 @@ class Events(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
 
-		self.muttHarass = False
-		self.neoHarass = False
-
 	Decorators = decorators.Decorators()
 
 	with open("config/exemptions.json", "r") as f:
 		e = json.load(f) 
 		exemptions = e["exemptions"]
+
+	with open("config/targets.json", "r") as f:
+		targets = json.load(f)
+		muttHarass = targets["mutt"]
+		neoHarass = targets["neo"]
 
 	@commands.command()
 	@Decorators.is_manager()
@@ -67,18 +69,18 @@ class Events(commands.Cog):
 	@commands.command()
 	@Decorators.is_manager()
 	async def bully(self, ctx, user:typing.Literal["mutt", "neo"]):
-		if user == "mutt" and not self.muttHarass:
-			await ctx.send("Mutt harassment is now enabled.")
-			self.muttHarass = True
-		elif user == "mutt" and self.muttHarass:
-			await ctx.send("Mutt harassment is now disabled.")
-			self.muttHarass = False
-		elif user == "neo" and not self.neoHarass:
-			await ctx.send("Neo harassment is now enabled.")
-			self.neoHarass = True
-		elif user == "neo" and self.neoHarass:
-			await ctx.send("Neo harassment is now disabled.")
-			self.neoHarass = False
+		if user == "mutt":
+			await ctx.send(f"Mutt harassment: {not self.muttHarass}")
+			self.targets["mutt"] = not self.muttHarass
+			with open("config/targets.json", "w") as f:
+				json.dump(self.targets, f, indent=4)
+			self.bot.reload_extension("cogs.events")
+		elif user == "neo":
+			await ctx.send(f"Neo harassment: {not self.neoHarass}")
+			self.targets["neo"] = not self.neoHarass
+			with open("config/targets.json", "w") as f:
+				json.dump(self.targets, f, indent=4)
+			self.bot.reload_extension("cogs.events")
 
 	@commands.Cog.listener()
 	async def on_message(self, msg):
