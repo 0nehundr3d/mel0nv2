@@ -1,6 +1,6 @@
 import json
 import nextcord
-from utility import converters
+from utility import converters, decorators
 from nextcord.ext import commands
 
 class Config(commands.Cog):
@@ -8,11 +8,9 @@ class Config(commands.Cog):
 		self.bot = bot
 
 	@commands.command()
+	@decorators.is_manager()
 	async def setGame(self, ctx, *, game:str):
-		with open("config/configuration.json", "r") as f:
-			config = json.load(f)
-		if ctx.author.id not in config["manager"]: return await ctx.send("You do not have access to this command")
-
+		with open("config/configuration.json", "r") as f: config = json.load(f)
 		config["game"] = game
 
 		with open("config/configuration.json", "w") as f:
@@ -22,10 +20,10 @@ class Config(commands.Cog):
 		return await ctx.send(f"Game set to {game}")
 
 	@commands.command()
+	@decorators.is_manager()
 	async def setGameType(self, ctx, dtype:str):
 		with open("config/configuration.json", "r") as f:
 			config = json.load(f)
-		if ctx.author.id not in config["manager"]: return await ctx.send("You do not have access to this command")
 		
 		config["gameType"] = converters.Convertor.unConvertGameType(dtype)
 		if not config["gameType"]: return await ctx.send("Invalid game type")
@@ -37,10 +35,10 @@ class Config(commands.Cog):
 		return await ctx.send(f"Game type set to {dtype}")
 
 	@commands.command()
+	@decorators.is_manager()
 	async def setStatus(self, ctx, status:str):
 		with open("config/configuration.json", "r") as f:
 			config = json.load(f)
-		if ctx.author.id not in config["manager"]: return await ctx.send("You do not have access to this command")
 		
 		config["status"] = converters.Convertor.unConvertStatus(status)
 		if not config["status"]: return await ctx.send("Invalid game type")

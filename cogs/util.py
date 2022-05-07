@@ -4,13 +4,13 @@ import json
 import os
 from datetime import datetime
 import pandas as pd
+from utility import decorators
 
 class Util(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
 
 	with open("config/configuration.json", "r") as f: config = json.load(f)
-	managers = config["manager"]
 	startTime = config["startTime"]
 
 	@commands.command()
@@ -23,8 +23,8 @@ class Util(commands.Cog):
 		await ctx.send("Help commands are hard just ping 0ne lol")
 
 	@commands.command()
+	@decorators.is_manager()
 	async def reloadCogs(self, ctx):
-		if ctx.author.id not in self.managers: return await ctx.send("You do not have access to this command.")
 
 		embed = nextcord.Embed(title="Reloading cogs...", color=0x00f21c)
 
