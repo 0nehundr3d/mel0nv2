@@ -1,4 +1,3 @@
-from ast import Str
 import nextcord
 
 class Convertor():
@@ -25,7 +24,7 @@ class Convertor():
 			return nextcord.Status.invisible
 
 	@staticmethod
-	def unConvertStatus(gameType:Str):
+	def unConvertStatus(gameType:str):
 		if gameType == "online":
 			return 0
 		elif gameType == "idle":
@@ -38,7 +37,7 @@ class Convertor():
 			return False
 
 	@staticmethod
-	def unConvertGameType(gameType:Str):
+	def unConvertGameType(gameType:str):
 		if gameType == "playing":
 			return 0
 		elif gameType == "watching":
