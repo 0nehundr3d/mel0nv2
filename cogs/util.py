@@ -34,6 +34,13 @@ class Util(commands.Cog):
 			try:
 				self.bot.reload_extension(f"cogs.{cog}")
 				embed.add_field(name=f"Reloading {cog}.", value="Success!", inline=False)
+			except commands.ExtensionNotLoaded:
+				try:
+					self.bot.load_extension(f"cogs.{cog}")
+					embed.add_field(name=f"Loading {cog}.", value="Success!", inline=False)
+				except Exception as e:
+					embed.add_field(name=f"Loading {cog}",value=f"Failed: {e}",inline=False)
+					embed.color = 0xf20004
 			except Exception as e:
 				embed.add_field(name=f"Reloading {cog}",value=f"Failed: {e}",inline=False)
 				embed.color = 0xf20004
