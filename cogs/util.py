@@ -5,6 +5,11 @@ import os
 from datetime import datetime
 import pandas as pd
 import utility.decorators as decorators
+import typing
+from contextlib import redirect_stdout
+import io
+import textwrap
+import traceback
 
 class Util(commands.Cog):
 	def __init__(self, bot:commands.Bot):
@@ -56,6 +61,53 @@ class Util(commands.Cog):
 		embed.add_field(name="Bot Uptime", value=f"{pd.to_timedelta(datetime.now() - timeObj).round('1s')}", inline=False)
 
 		await ctx.send(embed=embed)
+
+	@commands.command(hidden=True, aliases=["e"])
+	@Decorators.is_manager()
+	async def eval(self, ctx, raw:typing.Optional[bool] = False, *, body: str):
+			#Evaluates a code
+
+			env = {
+					"bot": self.bot,
+					"ctx": ctx,
+					"channel": ctx.message.channel,
+					"author": ctx.message.author,
+					"guild": ctx.message.guild,
+					"message": ctx.message,
+				}
+			env.update(globals())
+
+			stdout = io.StringIO()
+
+			to_compile = f"async def func():\n{textwrap.indent(body, '  ')}"
+
+			try:
+					exec(to_compile, env)
+			except Exception as e:
+					return await ctx.send(f"```py\n{e.__class__.__name__}: {e}\n```")
+
+			func = env["func"]
+			try:
+				with redirect_stdout(stdout):
+						ret = await func()
+			except Exception as e:
+					value = stdout.getvalue()
+					await ctx.send(f"```py\n{value}{traceback.format_exc()}\n```")
+			else:
+					value = stdout.getvalue()
+					try:
+							await ctx.message.add_reaction("\u2705")
+					except:
+							pass
+
+					if ret is None:
+							if value:
+									if raw:
+										await ctx.send(f"{value}")
+									else:
+										await ctx.send(f"```py\n{value}\n```")
+					else:
+							pass
 
 def setup(bot:commands.Bot):
 	bot.add_cog(Util(bot))

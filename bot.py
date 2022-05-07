@@ -1,7 +1,3 @@
-from contextlib import redirect_stdout
-import io
-import textwrap
-import traceback
 import nextcord
 from nextcord.ext import commands
 import json
@@ -80,56 +76,6 @@ def main():
 			else:
 				embed=nextcord.Embed(title=f"Reloaded {str(module).capitalize()}", description=f"Successfully reloaded cogs.{str(module).lower()}!", color=0x00d4ff)
 				await ctx.send(embed=embed)
-
-	@bot.command(hidden=True, aliases=["e"])
-	async def eval(ctx, rawStr:str, *, body: str):
-			raw = False
-			if rawStr == "true":
-				raw = True
-			#Evaluates a code
-
-			env = {
-					"bot": bot,
-					"ctx": ctx,
-					"channel": ctx.message.channel,
-					"author": ctx.message.author,
-					"guild": ctx.message.guild,
-					"message": ctx.message,
-				}
-			if ctx.message.author.id in manager:
-				env.update(globals())
-
-				stdout = io.StringIO()
-
-				to_compile = f"async def func():\n{textwrap.indent(body, '  ')}"
-
-				try:
-						exec(to_compile, env)
-				except Exception as e:
-						return await ctx.send(f"```py\n{e.__class__.__name__}: {e}\n```")
-
-				func = env["func"]
-				try:
-					with redirect_stdout(stdout):
-							ret = await func()
-				except Exception as e:
-						value = stdout.getvalue()
-						await ctx.send(f"```py\n{value}{traceback.format_exc()}\n```")
-				else:
-						value = stdout.getvalue()
-						try:
-								await ctx.message.add_reaction("\u2705")
-						except:
-								pass
-
-						if ret is None:
-								if value:
-										if raw:
-											await ctx.send(f"{value}")
-										else:
-											await ctx.send(f"```py\n{value}\n```")
-						else:
-								pass
 
 	bot.run(token)
 
