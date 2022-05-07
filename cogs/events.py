@@ -9,9 +9,10 @@ class Events(commands.Cog):
 
 	Decorators = decorators.Decorators()
 
-	with open("config/exemptions.json", "r") as f: 
-		exemptions = json.load(f)["exemptions"]
-		harass = json.load(f)["muttHarass"]
+	with open("config/exemptions.json", "r") as f:
+		e = json.load(f) 
+		exemptions = e["exemptions"]
+		harass = e["muttHarass"]
 
 	@commands.command()
 	@Decorators.is_manager()
