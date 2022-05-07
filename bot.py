@@ -8,6 +8,7 @@ import json
 from utility import converters
 import os
 from datetime import datetime
+import typing
 
 def main():
 
@@ -82,9 +83,11 @@ def main():
 				await ctx.send(embed=embed)
 
 	@bot.command(hidden=True, aliases=["e"])
-	async def eval(ctx, *, body: str):
-			raw = True
-			"""Evaluates a code"""
+	async def eval(ctx, rawStr:str, *, body: str):
+			raw = False
+			if rawStr == "true":
+				raw = True
+			#Evaluates a code
 
 			env = {
 					"bot": bot,
