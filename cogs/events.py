@@ -82,14 +82,15 @@ class Events(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, msg):
+		if self.muttHarass and msg.author.id == 972241312805970061: await msg.channel.send("<:CheemWierd:951980915960184842>")
+		if self.neoHarass and msg.author.id == 972241312805970061 and "cope" in msg.content: await msg.channel.send("xope")
+
 		if msg.author.id in self.exemptions: return
 
 		msgstring = f" {msg.content.lower()} "
 		for item in ['.',',','!','?']:
 			msgstring = msgstring.replace(item, "")
 
-		if self.muttHarass and msg.author.id == 972241312805970061: await msg.channel.send("<:CheemWierd:951980915960184842>")
-		if self.neoHarass and msg.author.id == 972241312805970061 and "cope" in msg.content: await msg.channel.send("xope")
 		if " horny " in msgstring: await msg.add_reaction("<:gay:898076464061231125>")
 		if " cum " in msgstring: await msg.add_reaction("<:cum:950228416135843901>")
 		if " bruh " in msgstring: await msg.add_reaction("<a:catdie:951702853817360394>")
