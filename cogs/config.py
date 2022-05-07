@@ -1,14 +1,17 @@
 import json
 import nextcord
-from utility import converters, decorators
+from utility import converters
+import utility.decorators as decorators
 from nextcord.ext import commands
 
 class Config(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
 
+	Decorators = decorators.Decorators()
+
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def setGame(self, ctx, *, game:str):
 		with open("config/configuration.json", "r") as f: config = json.load(f)
 		config["game"] = game
@@ -20,7 +23,7 @@ class Config(commands.Cog):
 		return await ctx.send(f"Game set to {game}")
 
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def setGameType(self, ctx, dtype:str):
 		with open("config/configuration.json", "r") as f:
 			config = json.load(f)
@@ -35,7 +38,7 @@ class Config(commands.Cog):
 		return await ctx.send(f"Game type set to {dtype}")
 
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def setStatus(self, ctx, status:str):
 		with open("config/configuration.json", "r") as f:
 			config = json.load(f)

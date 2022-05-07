@@ -1,17 +1,20 @@
 import nextcord
 from nextcord.ext import commands
 import json
-from util import decorators
+import utility.decorators as decorators
 
 class Events(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
 
-	with open("config/exemptions.json", "r") as f: exemptions = json.load(f)["exemptions"]
-	with open("config/exemptions.json", "r") as f: harass = json.load(f)["muttHarass"]
+	Decorators = decorators.Decorators()
+
+	with open("config/exemptions.json", "r") as f: 
+		exemptions = json.load(f)["exemptions"]
+		harass = json.load(f)["muttHarass"]
 
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def addExemption(self, ctx, user:nextcord.User):
 
 		with open("config/exemptions.json", "r") as f:
@@ -29,7 +32,7 @@ class Events(commands.Cog):
 			await ctx.reply(f"Failed add user to exemptions.\n{e}")
 
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def removeExemption(self, ctx, user:nextcord.User):
 
 		with open("config/exemptions.json", "r") as f:
@@ -47,7 +50,7 @@ class Events(commands.Cog):
 			await ctx.reply(f"Failed remove user from exemptions.\n{e}")
 
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def isExempt(self, ctx, user:nextcord.User = None):
 
 		with open("config/exemptions.json", "r") as f:
@@ -58,7 +61,7 @@ class Events(commands.Cog):
 				await ctx.reply(f"{user.name} is not exempted.")
 
 	@commands.command()
-	@decorators.is_manager()
+	@Decorators.is_manager()
 	async def bullyMutt(self, ctx):
 
 		with open("config/exemptions.json", "r") as f: config = json.load(f)
