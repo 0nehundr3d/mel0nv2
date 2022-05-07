@@ -89,7 +89,7 @@ class Events(commands.Cog):
 		for item in ['.',',','!','?']:
 			msgstring = msgstring.replace(item, "")
 
-		if self.harass and msg.author.id == 525896357756796948: await msg.channel.send("<:CheemWierd:951980915960184842>")
+		if self.harass and msg.author.id == 972241312805970061: await msg.channel.send("<:CheemWierd:951980915960184842>")
 		#if msg.author.id == 555045424222830594: await msg.channel.send(msg.content)
 		if " horny " in msgstring: await msg.add_reaction("<:gay:898076464061231125>")
 		if " cum " in msgstring: await msg.add_reaction("<:cum:950228416135843901>")
