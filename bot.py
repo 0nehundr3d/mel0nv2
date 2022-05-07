@@ -30,9 +30,7 @@ def main():
 	bot.remove_command("help")
 
 	# Load cogs
-	cogs = [x[:-3] for x in os.listdir("cogs") if x[-3:] == ".py"]
-
-	for cog in cogs:
+	for cog in [x[:-3] for x in os.listdir("cogs") if x[-3:] == ".py"]:
 		try:
 			bot.load_extension(f"cogs.{cog}")
 			print(f"Loaded {cog}")
