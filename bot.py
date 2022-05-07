@@ -83,7 +83,7 @@ def main():
 
 	@bot.command(hidden=True, aliases=["e"])
 	async def eval(ctx, *, body: str):
-			raw = False
+			raw = True
 			"""Evaluates a code"""
 
 			env = {
