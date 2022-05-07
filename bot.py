@@ -8,7 +8,6 @@ import json
 from utility import converters
 import os
 from datetime import datetime
-import typing
 
 def main():
 
