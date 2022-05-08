@@ -19,7 +19,7 @@ class Pain(commands.Cog):
 	@commands.command()
 	@Decorators.is_manager()
 	async def send(self, ctx, user:typing.Optional[nextcord.User], *, message:str):
-		if user is None:
+		if user == None:
 			if self.target == None:
 				self.target = self.bot.get_guild(347915804819324930).get_member(346060682388832266)
 			user = self.target
