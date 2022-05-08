@@ -1,19 +1,27 @@
 import nextcord
 from nextcord.ext import commands
 import json
+import utility.decorators as decorators
+import typing
 
 class Events(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
 
-	with open("config/exemptions.json", "r") as f: exemptions = json.load(f)["exemptions"]
-	with open("config/exemptions.json", "r") as f: harass = json.load(f)["muttHarass"]
+	Decorators = decorators.Decorators()
 
-	with open("config/configuration.json", "r") as f: manager = json.load(f)["manager"]
+	with open("config/exemptions.json", "r") as f:
+		e = json.load(f) 
+		exemptions = e["exemptions"]
+
+	with open("config/targets.json", "r") as f:
+		targets = json.load(f)
+		muttHarass = targets["mutt"]
+		neoHarass = targets["neo"]
 
 	@commands.command()
+	@Decorators.is_manager()
 	async def addExemption(self, ctx, user:nextcord.User):
-		if ctx.author.id not in self.manager: return
 
 		with open("config/exemptions.json", "r") as f:
 			exemptions = json.load(f)
@@ -30,8 +38,8 @@ class Events(commands.Cog):
 			await ctx.reply(f"Failed add user to exemptions.\n{e}")
 
 	@commands.command()
+	@Decorators.is_manager()
 	async def removeExemption(self, ctx, user:nextcord.User):
-		if ctx.author.id not in self.manager: return
 
 		with open("config/exemptions.json", "r") as f:
 			exemptions = json.load(f)
@@ -48,8 +56,8 @@ class Events(commands.Cog):
 			await ctx.reply(f"Failed remove user from exemptions.\n{e}")
 
 	@commands.command()
+	@Decorators.is_manager()
 	async def isExempt(self, ctx, user:nextcord.User = None):
-		if ctx.author not in self.manager or not user: user = ctx.author
 
 		with open("config/exemptions.json", "r") as f:
 			exemptions = json.load(f)
@@ -59,32 +67,36 @@ class Events(commands.Cog):
 				await ctx.reply(f"{user.name} is not exempted.")
 
 	@commands.command()
-	async def bullyMutt(self, ctx):
-		with open("config/exemptions.json", "r") as f: config = json.load(f)
-
-		if self.harass:
-			config["muttHarass"] = False
-			with open("config/exemptions.json", "w") as f:
-				json.dump(config, f, indent=4)
-			await ctx.send("Mutt harassment is now disabled.")
+	@Decorators.is_manager()
+	async def bully(self, ctx, user:typing.Literal["mutt", "neo"]):
+		if user == "mutt":
+			await ctx.send(f"Mutt harassment: {not self.muttHarass}")
+			self.targets["mutt"] = not self.muttHarass
+			with open("config/targets.json", "w") as f:
+				json.dump(self.targets, f, indent=4)
 			self.bot.reload_extension("cogs.events")
-		else:
-			config["muttHarass"] = True
-			with open("config/exemptions.json", "w") as f:
-				json.dump(config, f, indent=4)
-			await ctx.send("Mutt harassment is now enabled.")
+		elif user == "neo":
+			await ctx.send(f"Neo harassment: {not self.neoHarass}")
+			self.targets["neo"] = not self.neoHarass
+			with open("config/targets.json", "w") as f:
+				json.dump(self.targets, f, indent=4)
 			self.bot.reload_extension("cogs.events")
 
 	@commands.Cog.listener()
 	async def on_message(self, msg):
+		if self.muttHarass and msg.author.id == 972241312805970061: await msg.channel.send("<:CheemWierd:951980915960184842>")
+		if self.neoHarass and msg.author.id == 972241312805970061 and "cope" in msg.content: await msg.channel.send("xope")
+
 		if msg.author.id in self.exemptions: return
 
 		msgstring = f" {msg.content.lower()} "
+		for item in ['.',',','!','?']:
+			msgstring = msgstring.replace(item, "")
 
-		if self.harass and msg.author.id == 525896357756796948: await msg.channel.send("<:CheemWierd:951980915960184842> ")
 		if " horny " in msgstring: await msg.add_reaction("<:gay:898076464061231125>")
 		if " cum " in msgstring: await msg.add_reaction("<:cum:950228416135843901>")
 		if " bruh " in msgstring: await msg.add_reaction("<a:catdie:951702853817360394>")
+		if " mutt " in msgstring: await msg.add_reaction("<:CheemWierd:951980915960184842>")
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, err):
