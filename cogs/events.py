@@ -98,11 +98,6 @@ class Events(commands.Cog):
 		if " bruh " in msgstring: await msg.add_reaction("<a:catdie:951702853817360394>")
 		if " mutt " in msgstring: await msg.add_reaction("<:CheemWierd:951980915960184842>")
 
-	@commands.Cog.listener()
-	async def on_command_error(self, ctx, err):
-		if isinstance(err, commands.CommandNotFound):
-			await ctx.send(f"{err}")
-
 
 def setup(bot:commands.Bot):
 	bot.add_cog(Events(bot))
