@@ -26,6 +26,7 @@ class Pain(commands.Cog):
 		else:
 			return await ctx.send("No user specified.")
 		await user.send(message)
+		await ctx.send(f"Message sent to {user}.")
 
 	@Decorators.is_manager()
 	@commands.command()
