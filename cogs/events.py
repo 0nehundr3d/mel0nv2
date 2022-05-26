@@ -25,7 +25,7 @@ class Events(commands.Cog):
 
 		with open("config/exemptions.json", "r") as f:
 			exemptions = json.load(f)
-			if user.id in exemptions["exemptions"]: return await ctx.send(f"{user.name} is already exempted."); return
+			if user.id in exemptions["exemptions"]: return await ctx.send(f"{user.name} is already exempted.")
 
 			exemptions["exemptions"].append(user.id)
 
