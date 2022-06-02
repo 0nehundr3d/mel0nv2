@@ -25,7 +25,7 @@ class Events(commands.Cog):
 
 		with open("config/exemptions.json", "r") as f:
 			exemptions = json.load(f)
-			if user.id in exemptions["exemptions"]: return await ctx.send(f"{user.name} is already exempted."); return
+			if user.id in exemptions["exemptions"]: return await ctx.send(f"{user.name} is already exempted.")
 
 			exemptions["exemptions"].append(user.id)
 
@@ -84,10 +84,12 @@ class Events(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, msg):
+		if msg.author == self.bot.user: return
+
 		if self.muttHarass and msg.author.id == 972241312805970061: await msg.channel.send("<:CheemWierd:951980915960184842>")
 		if self.neoHarass and msg.author.id == 972241312805970061 and "cope" in msg.content: await msg.channel.send("xope")
 
-		if msg.channel.type == nextcord.ChannelType.private and msg.author.id not in [346060682388832266, 429394245535662080]: await self.bot.get_guild(347915804819324930).get_member(346060682388832266).send(f"{msg.author.name}#{msg.author.discriminator}({msg.author.id}): {msg.content}")
+		if msg.channel.type == nextcord.ChannelType.private and msg.author != self.bot.get_user(346060682388832266): await self.bot.get_user(346060682388832266).send(f"{msg.author.name}#{msg.author.discriminator}({msg.author.id}): {msg.content}")
 
 		if msg.author.id in self.exemptions: return
 
