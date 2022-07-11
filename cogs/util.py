@@ -27,7 +27,7 @@ class Util(commands.Cog):
 
 	@commands.command()
 	async def help(self, ctx):
-		await ctx.send("Help commands are hard just ping 0ne lol")
+		await ctx.send("https://github.com/0nehundr3d/mel0nv2")
 
 	@commands.command()
 	@Decorators.is_manager()
