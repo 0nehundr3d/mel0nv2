@@ -52,7 +52,7 @@ class Util(commands.Cog):
 
 		await ctx.send(embed=embed)
 
-	@commands.command()
+	@commands.command(aliases=["uptime"])
 	async def upTime(self, ctx):
 		embed = nextcord.Embed(title="Up Time", color=0x00f21c)
 
