@@ -1,4 +1,3 @@
-from operator import mod
 import random
 from nextcord.ext import commands
 import random
