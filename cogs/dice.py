@@ -3,8 +3,6 @@ from nextcord.ext import commands
 import random
 import re
 
-from regex import P
-
 class CogName(commands.Cog):
 	def __init__(self, bot:commands.Bot):
 		self.bot = bot
@@ -15,7 +13,8 @@ class CogName(commands.Cog):
 			"ammount" : 0,
 			"sides" : 0,
 			"mod" : 0,
-			"reroll" : []
+			"reroll" : [],
+			"remove" : 0
 		}
 
 		die["ammount"] = int(dice[:dice.index(re.search("d", dice).group())])
@@ -61,11 +60,25 @@ class CogName(commands.Cog):
 				except:
 					die["reroll"].append(int(dice))
 					dice = ''
+			
+			elif v == "k":
+				dice = dice.replace("k", '', 1)
+				try:
+					die["remove"] = (int(dice[:dice.index(re.search("\D", dice).group())]))
+					dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
+				except:
+					die["remove"] = (int(dice))
+					dice = ''
 
 		rolls = []
+		removed = []
 
 		if set(range(1, die["sides"]+1, 1)).issubset(set(die["reroll"])):
-			return await ctx.send("can not reroll all dice states")
+			return await ctx.send("Can not reroll all dice states")
+
+		if die["ammount"] <= die["remove"]:
+			return await ctx.send("Can not remove all rolls")
+		
 
 		for i in range(die["ammount"]):
 			roll = random.randint(1,die["sides"])
@@ -73,7 +86,14 @@ class CogName(commands.Cog):
 				roll = random.randint(1,die["sides"])
 			rolls.append(roll)
 
-		await ctx.send(f"{rolls} total: {sum(rolls) + die['mod']}")
+		for i in range(die["remove"]):
+			removed.append(rolls.pop(rolls.index(min(rolls))))
+
+		toSend = f"{rolls} total: {sum(rolls) + die['mod']}"
+		if len(removed) > 0:
+			toSend = toSend + f" (removed {removed})"
+
+		await ctx.send(toSend)
 
 
 def setup(bot:commands.Bot):
