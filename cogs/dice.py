@@ -33,42 +33,42 @@ class CogName(commands.Cog):
 			
 		while re.search(detectStr, dice):
 			v = re.search(detectStr, dice).group()
+			match v:
+				case "+":
+					dice = dice.replace('+', '', 1)
+					try:
+						die["mod"] += int(dice[:dice.index(re.search("\D", dice).group())])
+						dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
+					except:
+						die["mod"] += int(dice)
+						dice = ''
 
-			if v == "+":
-				dice = dice.replace('+', '', 1)
-				try:
-					die["mod"] += int(dice[:dice.index(re.search("\D", dice).group())])
-					dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
-				except:
-					die["mod"] += int(dice)
-					dice = ''
+				case "-":
+					dice = dice.replace('-', '', 1)
+					try:
+						die["mod"] -= int(dice[:dice.index(re.search("\D", dice).group())])
+						dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
+					except:
+						die["mod"] -= int(dice)
+						dice = ''
 
-			elif v == "-":
-				dice = dice.replace('-', '', 1)
-				try:
-					die["mod"] -= int(dice[:dice.index(re.search("\D", dice).group())])
-					dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
-				except:
-					die["mod"] -= int(dice)
-					dice = ''
-
-			elif v == "r":
-				dice = dice.replace("r", '', 1)
-				try:
-					die["reroll"].append(int(dice[:dice.index(re.search("\D", dice).group())]))
-					dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
-				except:
-					die["reroll"].append(int(dice))
-					dice = ''
-			
-			elif v == "k":
-				dice = dice.replace("k", '', 1)
-				try:
-					die["remove"] = (int(dice[:dice.index(re.search("\D", dice).group())]))
-					dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
-				except:
-					die["remove"] = (int(dice))
-					dice = ''
+				case "r":
+					dice = dice.replace("r", '', 1)
+					try:
+						die["reroll"].append(int(dice[:dice.index(re.search("\D", dice).group())]))
+						dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
+					except:
+						die["reroll"].append(int(dice))
+						dice = ''
+				
+				case "k":
+					dice = dice.replace("k", '', 1)
+					try:
+						die["remove"] = (int(dice[:dice.index(re.search("\D", dice).group())]))
+						dice = dice.replace(dice[:dice.index(re.search("\D", dice).group())], '', 1)
+					except:
+						die["remove"] = (int(dice))
+						dice = ''
 
 		rolls = []
 		removed = []
