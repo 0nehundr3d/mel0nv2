@@ -10,13 +10,14 @@ def main():
 	# Get configuration.json
 	with open("config/configuration.json", "r") as config:
 		data = json.load(config)
-	token = data["token"]
-	prefix = data["prefix"]
-	manager = data["manager"]
-	status = data["status"]
-	game = data["game"]
-	gameType = data["gameType"]
-	disabledCogs = data["disabledCogs"]
+		prefix = data["prefix"]
+		manager = data["manager"]
+		status = data["status"]
+		game = data["game"]
+		gameType = data["gameType"]
+	
+	with open("config/token.txt", "r") as t:
+		token = t.read()
 
 	data["startTime"] = f"{datetime.now()}"
 

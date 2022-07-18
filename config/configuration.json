@@ -1,5 +1,4 @@
 {
-    "token": "NDI5Mzk0MjQ1NTM1NjYyMDgw.Wr6ujQ.ctTEXg2NNj4zmKEIDP6rXtWdmNI",
     "prefix": ".",
     "manager": [
         346060682388832266
@@ -7,8 +6,5 @@
     "game": "0ne suffer",
     "gameType": 1,
     "status": 2,
-    "startTime": "2022-07-08 19:28:19.175761",
-    "disabledCogs": [
-        "meta"
-    ]
+    "startTime": "2022-07-11 12:50:14.749050"
 }

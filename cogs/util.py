@@ -28,7 +28,7 @@ class Util(commands.Cog):
 
 	@commands.command()
 	async def help(self, ctx):
-		await ctx.send("Help commands are hard just ping 0ne lol")
+		await ctx.send("https://github.com/0nehundr3d/mel0nv2")
 
 	@commands.command()
 	@Decorators.is_manager()
@@ -55,24 +55,7 @@ class Util(commands.Cog):
 
 		await ctx.send(embed=embed)
 
-	@commands.command()
-	@Decorators.is_manager()
-	async def disableCog(self, ctx, cog):
-		if cog in self.disabledCogs:
-			return await ctx.send("Cog is already disabled.")
-		else:
-			try:
-				self.bot.unload_extension(f"cogs.{cog}")
-			except commands.ExtensionNotLoaded:
-				pass
-			self.config["disabledCogs"].append(cog)
-			with open("config/configuration.json", "w") as f:
-				json.dump(self.config, f, indent=4)
-			await ctx.send(f"{cog} has been disabled.")
-			self.bot.reload_extension("cogs.util")
-			return
-
-	@commands.command()
+	@commands.command(aliases=["uptime"])
 	async def upTime(self, ctx):
 		embed = nextcord.Embed(title="Up Time", color=0x00f21c)
 
