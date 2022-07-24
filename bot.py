@@ -29,11 +29,14 @@ def main():
 
 	# Load cogs
 	for cog in [x[:-3] for x in os.listdir("cogs") if x[-3:] == ".py"]:
-		try:
-			bot.load_extension(f"cogs.{cog}")
-			print(f"Loaded {cog}")
-		except Exception as e:
-			print(f"Failed to load extension {cog}: {e}")
+		if cog in disabledCogs:
+			continue
+		else:
+			try:
+				bot.load_extension(f"cogs.{cog}")
+				print(f"Loaded {cog}")
+			except Exception as e:
+				print(f"Failed to load extension {cog}: {e}")
 
 	@bot.event
 	async def on_ready():
@@ -42,13 +45,17 @@ def main():
 		print(nextcord.__version__)
 
 	def check_manager():
-			def predicate(ctx):
-				return ctx.author.id in manager
-			return commands.check(predicate)
+		def predicate(ctx):
+			return ctx.author.id in manager
+		return commands.check(predicate)
 
 	@check_manager()
 	@bot.command(hidden=True)
 	async def load(ctx, *, module):
+			with open("config/configuration.json", "r") as config:
+				disabledCogs = json.load(config)["disabledCogs"]
+			if module in disabledCogs:
+				return await ctx.send("Can not load a disabled cog")
 			try:
 				bot.load_extension(f"cogs.{module}")
 			except commands.ExtensionError as e:

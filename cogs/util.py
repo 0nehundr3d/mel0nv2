@@ -19,6 +19,7 @@ class Util(commands.Cog):
 
 	with open("config/configuration.json", "r") as f: config = json.load(f)
 	startTime = config["startTime"]
+	disabledCogs = config["disabledCogs"]
 
 	@commands.command()
 	async def ping(self, ctx):
@@ -36,6 +37,8 @@ class Util(commands.Cog):
 		embed = nextcord.Embed(title="Reloading cogs...", color=0x00f21c)
 
 		for cog in [x[:-3] for x in os.listdir("cogs") if x[-3:] == ".py"]:
+			if cog in self.disabledCogs:
+				continue
 			try:
 				self.bot.reload_extension(f"cogs.{cog}")
 				embed.add_field(name=f"Reloading {cog}.", value="Success!", inline=False)
