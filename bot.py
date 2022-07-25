@@ -15,7 +15,7 @@ def main():
 		status = data["status"]
 		game = data["game"]
 		gameType = data["gameType"]
-		disabledCogs = json.load(config)["disabledCogs"]
+		disabledCogs = data["disabledCogs"]
 	
 	with open("config/token.txt", "r") as t:
 		token = t.read()
